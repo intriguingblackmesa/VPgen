@@ -252,9 +252,9 @@ def process_zap_xml_report(report_path):
 
                 for vulnerability_type in vulnerability_types:
                         if not vulnerabilities[location][vulnerability_type][method]:
-                            vulnerabilities[location][vulnerability_type][method] = set([param])
+                            vulnerabilities[location][vulnerability_type][method] = [param]
                         else:
-                            vulnerabilities[location][vulnerability_type][method].add([param])
+                            vulnerabilities[location][vulnerability_type][method] += [param]
 
     return vulnerabilities
 
@@ -333,9 +333,9 @@ def process_wapiti_json_report(report_path):
 
                 for vulnerability_type in vulnerability_types:
                     if not vulnerabilities[location][vulnerability_type][method]:
-                        vulnerabilities[location][vulnerability_type][method] = set([parameter])
+                        vulnerabilities[location][vulnerability_type][method] = [parameter]
                     else:
-                        vulnerabilities[location][vulnerability_type][method].add([parameter])
+                        vulnerabilities[location][vulnerability_type][method] += [parameter]
     
     return vulnerabilities
 
