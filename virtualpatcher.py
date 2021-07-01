@@ -191,7 +191,8 @@ def generate_virtual_patch(location, vulnerabilities):
             params = []
             for method in vulnerabilities[vulnerability_type]:
                 if method in METHOD_VARIABLE_DICT:
-                    params += [f'ARGS_{method}:{param}' for param in vulnerabilities[vulnerability_type][method]]
+                    params += [f'ARGS:{param}' for param in vulnerabilities[vulnerability_type][method]]
+            params = list(set(params))   # Remove duplicates
             sec_rules_add_params.append(f'SecRuleUpdateTargetByTag "{VULN_TAG_DICT[vulnerability_type]}" "{",".join(params)}"')
 
         location_match_end_tag = '</LocationMatch>'
@@ -251,9 +252,9 @@ def process_zap_xml_report(report_path):
 
                 for vulnerability_type in vulnerability_types:
                         if not vulnerabilities[location][vulnerability_type][method]:
-                            vulnerabilities[location][vulnerability_type][method] = [param]
+                            vulnerabilities[location][vulnerability_type][method] = set([param])
                         else:
-                            vulnerabilities[location][vulnerability_type][method] += [param]
+                            vulnerabilities[location][vulnerability_type][method].add([param])
 
     return vulnerabilities
 
@@ -332,9 +333,9 @@ def process_wapiti_json_report(report_path):
 
                 for vulnerability_type in vulnerability_types:
                     if not vulnerabilities[location][vulnerability_type][method]:
-                        vulnerabilities[location][vulnerability_type][method] = [parameter]
+                        vulnerabilities[location][vulnerability_type][method] = set([parameter])
                     else:
-                        vulnerabilities[location][vulnerability_type][method] += [parameter]
+                        vulnerabilities[location][vulnerability_type][method].add([parameter])
     
     return vulnerabilities
 
