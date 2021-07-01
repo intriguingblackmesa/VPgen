@@ -191,7 +191,7 @@ def generate_virtual_patch(location, vulnerabilities):
             params = []
             for method in vulnerabilities[vulnerability_type]:
                 if method in METHOD_VARIABLE_DICT:
-                    params += [f'ARGS:{param}' for param in vulnerabilities[vulnerability_type][method]]
+                    params += [f'ARGS_{method}:{param}' for param in vulnerabilities[vulnerability_type][method]]
             sec_rules_add_params.append(f'SecRuleUpdateTargetByTag "{VULN_TAG_DICT[vulnerability_type]}" "{",".join(params)}"')
 
         location_match_end_tag = '</LocationMatch>'
