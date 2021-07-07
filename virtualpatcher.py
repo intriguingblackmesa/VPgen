@@ -120,30 +120,10 @@ WAPITI_REPORT_ALERT_DICT = {
     WAPITI_ALERT_SQLI: [VulnerabilityType.SQLI],
     WAPITI_ALERT_SQLI_BLIND: [VulnerabilityType.SQLI],
     WAPITI_ALERT_LDAP: [VulnerabilityType.LDAPI],
-    WAPITI_ALERT_PATH_TRAVERSAL: [VulnerabilityType.LFI, VulnerabilityType.PHP],
+    WAPITI_ALERT_PATH_TRAVERSAL: [VulnerabilityType.LFI, VulnerabilityType.RFI, VulnerabilityType.PHP],
     WAPITI_ALERT_RCE_COMMAND_EXEC: [VulnerabilityType.RCE, VulnerabilityType.PHP]
 }
-
-WAPITI_REPORT_ALERT_DICT = {
-    WAPITI_ALERT_XSS: [VulnerabilityType.XSS],
-    WAPITI_ALERT_SQLI: [VulnerabilityType.SQLI],
-    WAPITI_ALERT_SQLI_BLIND: [VulnerabilityType.SQLI],
-    WAPITI_ALERT_SQLI_SPRING_JDBC: [VulnerabilityType.SQLI],
-    WAPITI_ALERT_LDAP: [VulnerabilityType.LDAPI],
-    WAPITI_ALERT_LFI: [VulnerabilityType.LFI],
-    WAPITI_ALERT_LFI_CURRENT_FILE: [VulnerabilityType.LFI],
-    WAPITI_ALERT_RFI: [VulnerabilityType.RFI],
-    WAPITI_ALERT_RFI_DISCLOSURE:  [VulnerabilityType.RFI],
-    WAPITI_ALERT_RCE_COMMAND_EXEC: [VulnerabilityType.RCE],
-    WAPITI_ALERT_RCE_PHP_WARNING_EXEC: [VulnerabilityType.RCE, VulnerabilityType.PHP],
-    WAPITI_ALERT_PHP_WARNING_EVAL: [VulnerabilityType.PHP],
-    WAPITI_ALERT_PHP_EVALUATION: [VulnerabilityType.PHP],
-    WAPITI_ALERT_PHP_PREG_REPLACE: [VulnerabilityType.PHP],
-    WAPITI_ALERT_PHP_WARNING_ASSERT: [VulnerabilityType.PHP],
-    WAPITI_ALERT_PHP_EVALUATION_WARNING: [VulnerabilityType.PHP],
-    WAPITI_ALERT_PATH_TRAVERSAL: [VulnerabilityType.LFI]
-}
-
+   
 METHOD_VARIABLE_DICT = {
     "GET": "ARGS_GET",
     "POST": "ARGS_POST"
