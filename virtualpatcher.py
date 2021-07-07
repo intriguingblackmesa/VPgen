@@ -29,13 +29,14 @@ SQLI_TAG = "attack-sqli"
 LDAP_TAG = "language-ldap"
 PROTOCOL_TAG = "attack-protocol"
 
-ZAP_ALERT_XSS_REFL = "Cross Site Scripting (Reflected)";
-ZAP_ALERT_XSS_PERS = "Cross Site Scripting (Persistent)";
-ZAP_ALERT_SQLI = "SQL Injection";
-ZAP_ALERT_LFI = "Path Traversal";
-ZAP_ALERT_RFI = "Remote File Inclusion";
-ZAP_ALERT_PHP = "Server Side Code Injection - PHP Code Injection";
-ZAP_ALERT_RCE = "Remote OS Command Injection";
+ZAP_ALERT_XSS_REFL = "Cross Site Scripting (Reflected)"
+ZAP_ALERT_XSS_PERS = "Cross Site Scripting (Persistent)"
+ZAP_ALERT_SQLI = "SQL Injection"
+ZAP_ALERT_SQLI_MYSQL = "SQL Injection - MySQL"
+ZAP_ALERT_LFI = "Path Traversal"
+ZAP_ALERT_RFI = "Remote File Inclusion"
+ZAP_ALERT_PHP = "Server Side Code Injection - PHP Code Injection"
+ZAP_ALERT_RCE = "Remote OS Command Injection"
 
 WAPITI_ALERT_XSS = "Cross Site Scripting"
 WAPITI_ALERT_SQLI = "SQL Injection"
@@ -91,7 +92,8 @@ ZAP_REPORT_ALERT_DICT = {
     ZAP_ALERT_PHP: [VulnerabilityType.PHP],
     ZAP_ALERT_XSS_PERS: [VulnerabilityType.XSS],
     ZAP_ALERT_XSS_REFL: [VulnerabilityType.XSS],
-    ZAP_ALERT_SQLI: [VulnerabilityType.SQLI]
+    ZAP_ALERT_SQLI: [VulnerabilityType.SQLI],
+    ZAP_ALERT_SQLI_MYSQL: [VulnerabilityType.SQLI]
 }
 
 # If we need to differentiate between different vulnerabilities within a module
