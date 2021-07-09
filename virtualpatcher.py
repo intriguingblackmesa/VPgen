@@ -6,7 +6,7 @@ import pprint
 import sys
 import json
 
-SUPPORTED_SCANNERS = ["zap", "wapiti"]
+SUPPORTED_SCANNERS = ["zap", "wapiti", "navex"]
 
 OWASP_CRS_RULES_DIR = os.getenv('OWASP_CRS_DIR') + "/rules/"
 
@@ -56,6 +56,9 @@ WAPITI_ALERT_PHP_PREG_REPLACE = "preg_replace injection"
 WAPITI_ALERT_PHP_WARNING_ASSERT = "Warning assert"
 WAPITI_ALERT_PHP_EVALUATION_WARNING = "Evaluation warning"
 
+NAVEX_SQLI_NAME = "sql"
+
+
 class VulnerabilityType(Enum):
     LFI = 1
     RFI = 2
@@ -95,6 +98,12 @@ ZAP_REPORT_ALERT_DICT = {
     ZAP_ALERT_SQLI: [VulnerabilityType.SQLI],
     ZAP_ALERT_SQLI_MYSQL: [VulnerabilityType.SQLI]
 }
+
+NAVEX_REPORT_ALERT_DIC = {
+    NAVEX_SQLI_NAME: [VulnerabilityType.SQLI]
+}
+
+
 
 # If we need to differentiate between different vulnerabilities within a module
 """ WAPITI_REPORT_ALERT_DICT = {
@@ -321,10 +330,53 @@ def process_wapiti_json_report(report_path):
     
     return vulnerabilities
 
+def process_navex_report(report_path):
+    vulnerabilities = Vividict()
+    with open(report_path, 'r') as navex_report_file:
+        while line := navex_report_file.readline():
+            z3file = line.split('FILE:')[1].rstrip()
+            
+            line = navex_report_file.readline()
+            src_url = line.split('SRC_URL:')[1].rstrip()
 
+            line = navex_report_file.readline()
+            dest_url = line.split('DEST_URL: ')[1].rstrip()
+
+            line = navex_report_file.readline()
+            namevaluepair = line.split('NameValuePair: ')[1].rstrip()
+
+            line = navex_report_file.readline()
+            get = line.split('get: ')[1].rstrip()
+
+            vulnerability_name = z3file.split('__')[3]
+
+            location = dest_url.split('http://localhost')[1]
+            parameter = ''
+            method = ''
+            if namevaluepair:
+                parameter = namevaluepair.split('=')[0]
+                method = 'POST'
+            elif get:
+                parameter = get.split('=')[0]
+                method = 'GET'
+            else:
+                print("BOTH NAMEVALUEPAIR AND GET ARE EMPTY")
+                continue
+            
+            vulnerability_types = NAVEX_REPORT_ALERT_DIC[vulnerability_name]
+
+            for vulnerability_type in vulnerability_types:
+                if not vulnerabilities[location][vulnerability_type][method]:
+                    vulnerabilities[location][vulnerability_type][method] = [parameter]
+                else:
+                    vulnerabilities[location][vulnerability_type][method] += [parameter]
+            
+    return vulnerabilities
+
+        
 def main():
     if len(sys.argv) != 4:
-        print("python virtualpatcher.py <zap|wapiti> </path/to/report> <output_filename>")
+        print("python virtualpatcher.py <zap|wapiti|navex> </path/to/report> <output_filename>")
         return
     
     scanner = sys.argv[1].lower()
@@ -342,6 +394,8 @@ def main():
         vulnerabilities = process_zap_report(report_path)
     elif scanner == "wapiti":
         vulnerabilities = process_wapiti_report(report_path)
+    elif scanner == "navex":
+        vulnerabilities = process_navex_report(report_path)
     
     if vulnerabilities is None:
         print("No vulnerabilities were found. Exiting...")
